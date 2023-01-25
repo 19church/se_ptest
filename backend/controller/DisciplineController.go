@@ -432,7 +432,7 @@ func ListDiscipline(c *gin.Context) {
 
 }
 
-// DELETE /admins/:id
+// DELETE /disciplines/:id
 func DeleteDiscipline(c *gin.Context) {
 	id := c.Param("id")
 	if tx := entity.DB().Exec("DELETE FROM disciplines WHERE id = ?", id); tx.RowsAffected == 0 {
