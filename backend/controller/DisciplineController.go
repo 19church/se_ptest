@@ -43,7 +43,7 @@ func GetAdmin(c *gin.Context) {
 
 	id := c.Param("id")
 
-	if err := entity.DB().Raw("SELECT * FROM users WHERE id = ?", id).Scan(&admin).Error; err != nil {
+	if err := entity.DB().Raw("SELECT * FROM admins WHERE id = ?", id).Scan(&admin).Error; err != nil {
 
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 
@@ -61,7 +61,7 @@ func ListAdmin(c *gin.Context) {
 
 	var admins []entity.Admin
 
-	if err := entity.DB().Raw("SELECT * FROM users").Scan(&admins).Error; err != nil {
+	if err := entity.DB().Raw("SELECT * FROM admins").Scan(&admins).Error; err != nil {
 
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 
@@ -154,7 +154,7 @@ func GetStudent(c *gin.Context) {
 
 	id := c.Param("id")
 
-	if err := entity.DB().Raw("SELECT * FROM users WHERE id = ?", id).Scan(&student).Error; err != nil {
+	if err := entity.DB().Raw("SELECT * FROM students WHERE id = ?", id).Scan(&student).Error; err != nil {
 
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 
@@ -172,7 +172,7 @@ func ListStudent(c *gin.Context) {
 
 	var students []entity.Student
 
-	if err := entity.DB().Raw("SELECT * FROM users").Scan(&students).Error; err != nil {
+	if err := entity.DB().Raw("SELECT * FROM students").Scan(&students).Error; err != nil {
 
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 
@@ -265,7 +265,7 @@ func GetDisciplineType(c *gin.Context) {
 
 	id := c.Param("id")
 
-	if err := entity.DB().Raw("SELECT * FROM users WHERE id = ?", id).Scan(&disciplineType).Error; err != nil {
+	if err := entity.DB().Raw("SELECT * FROM discipline_types WHERE id = ?", id).Scan(&disciplineType).Error; err != nil {
 
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 
@@ -283,7 +283,7 @@ func ListDisciplineType(c *gin.Context) {
 
 	var disciplineTypes []entity.DisciplineType
 
-	if err := entity.DB().Raw("SELECT * FROM users").Scan(&disciplineTypes).Error; err != nil {
+	if err := entity.DB().Raw("SELECT * FROM discipline_types").Scan(&disciplineTypes).Error; err != nil {
 
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 
@@ -402,7 +402,7 @@ func GetDiscipline(c *gin.Context) {
 
 	id := c.Param("id")
 
-	if err := entity.DB().Raw("SELECT * FROM users WHERE id = ?", id).Scan(&discipline).Error; err != nil {
+	if err := entity.DB().Raw("SELECT * FROM disciplines WHERE id = ?", id).Scan(&discipline).Error; err != nil {
 
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 
@@ -420,7 +420,7 @@ func ListDiscipline(c *gin.Context) {
 
 	var disciplines []entity.Discipline
 
-	if err := entity.DB().Raw("SELECT * FROM users").Scan(&disciplines).Error; err != nil {
+	if err := entity.DB().Raw("SELECT * FROM disciplines").Scan(&disciplines).Error; err != nil {
 
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 
