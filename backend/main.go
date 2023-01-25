@@ -42,7 +42,7 @@ func main() {
 	r.POST("/CreateStudent", controller.CreateStudent)
 	r.GET("/GetStudent/:id", controller.GetStudent)
 	r.GET("/ListStudent", controller.ListStudent)
-	r.DELETE("/DeleteAdmin/:id", controller.DeleteAdmin)
+	r.DELETE("/DeleteStudent/:id", controller.DeleteAdmin)
 	r.PATCH("/UpdateStudent", controller.UpdateStudent)
 
 	//DisciplineType
