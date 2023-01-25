@@ -73,6 +73,17 @@ func ListAdmin(c *gin.Context) {
 
 }
 
+// DELETE /admins/:id
+func DeleteAdmin(c *gin.Context) {
+	id := c.Param("id")
+	if tx := entity.DB().Exec("DELETE FROM admins WHERE id = ?", id); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Admin not found"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"data": id})
+}
+
 // PATCH /admins
 
 func UpdateAdmin(c *gin.Context) {
@@ -171,6 +182,17 @@ func ListStudent(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"data": students})
 
+}
+
+// DELETE /students/:id
+func DeleteStudent(c *gin.Context) {
+	id := c.Param("id")
+	if tx := entity.DB().Exec("DELETE FROM students WHERE id = ?", id); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Student not found"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"data": id})
 }
 
 // PATCH /students
@@ -273,6 +295,17 @@ func ListDisciplineType(c *gin.Context) {
 
 }
 
+// DELETE /admins/:id
+func DeleteDisciplineType(c *gin.Context) {
+	id := c.Param("id")
+	if tx := entity.DB().Exec("DELETE FROM discipline_types WHERE id = ?", id); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "DisciplineType not found"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"data": id})
+}
+
 // PATCH /disciplineTypes
 
 func UpdateDisciplineType(c *gin.Context) {
@@ -313,26 +346,52 @@ func UpdateDisciplineType(c *gin.Context) {
 
 func CreateDiscipline(c *gin.Context) {
 
-	var discipline entity.Discipline
+	var Discipline entity.Discipline
+	var Admin entity.Admin
+	var Student entity.Student
+	var DisciplineType entity.DisciplineType
 
-	if err := c.ShouldBindJSON(&discipline); err != nil {
-
+	//1
+	if err := c.ShouldBindJSON(&Discipline); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-
 		return
-
 	}
 
-	if err := entity.DB().Create(&discipline).Error; err != nil {
-
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-
+	// 2: ค้นหา DisciplineType ด้วย id
+	if tx := entity.DB().Where("id = ?", Discipline.DisciplineTypeID).First(&DisciplineType); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "DisciplineType not found"})
 		return
-
 	}
 
-	c.JSON(http.StatusOK, gin.H{"data": discipline})
+	// 3: ค้นหา Student ด้วย id
+	if tx := entity.DB().Where("id = ?", Discipline.StudentID).First(&Student); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Student not found"})
+		return
+	}
 
+	// 4: ค้นหา Admin ด้วย id
+	if tx := entity.DB().Where("id = ?", Discipline.AdminID).First(&Admin); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "visitor_type not found"})
+		return
+	}
+
+	// 5: สร้าง Discipline
+	dp := entity.Discipline{
+		AdminID:               Discipline.AdminID,          // โยงความสัมพันธ์กับ Entity Admin
+		StudentID:             Discipline.StudentID,        // โยงความสัมพันธ์กับ Entity Student
+		DisciplineTypeID:      Discipline.DisciplineTypeID, // โยงความสัมพันธ์กับ Entity DisciplineType
+		Discipline_Reason:     Discipline.Discipline_Reason,
+		Discipline_Punishment: Discipline.Discipline_Punishment,
+		Discipline_Point:      Discipline.Discipline_Point,
+		Added_Time:            Discipline.Added_Time, // ตั้งค่าฟิลด์ Added_Time
+	}
+
+	//6: บันทึก
+	if err := entity.DB().Create(&dp).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"Data_Student_error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"data": dp})
 }
 
 // GET /discipline/:id
@@ -371,6 +430,17 @@ func ListDiscipline(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"data": disciplines})
 
+}
+
+// DELETE /admins/:id
+func DeleteDiscipline(c *gin.Context) {
+	id := c.Param("id")
+	if tx := entity.DB().Exec("DELETE FROM disciplines WHERE id = ?", id); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Discipline not found"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"data": id})
 }
 
 // PATCH /discipline
