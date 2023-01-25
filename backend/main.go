@@ -52,7 +52,7 @@ func main() {
 	r.DELETE("/DeleteDisciplineType/:id", controller.DeleteDisciplineType)
 	r.PATCH("/UpdateDisciplineType", controller.UpdateDisciplineType)
 
-	/////////////////////////////////////////////////////////////
+	//TODO....abcde
 
 	//Discipline
 	r.POST("/CreateDiscipline", controller.CreateDiscipline)
