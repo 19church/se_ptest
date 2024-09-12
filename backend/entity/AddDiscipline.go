@@ -8,21 +8,21 @@ import (
 
 type Admin struct {
 	gorm.Model
-	Name string
+	Admin_Name string
 
 	Admins []Admin `gorm:"foreignKey:AdminID"`
 }
 
 type Student struct {
 	gorm.Model
-	Name string
+	Student_Name string
 
 	Students []Student `gorm:"foreignKey:StudentID"`
 }
 
 type DisciplineType struct {
 	gorm.Model
-	Name string
+	DisciplineType_Name string
 
 	DisciplineTypes []DisciplineType `gorm:"foreignKey:DisciplineTypeID"`
 }
